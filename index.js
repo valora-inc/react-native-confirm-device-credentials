@@ -1,6 +1,6 @@
 
 import { NativeModules } from 'react-native';
 
-const { RNReactNativeConfirmDeviceCredentials } = NativeModules;
+const { RNConfirmDeviceCredentials } = NativeModules;
 
-export default RNReactNativeConfirmDeviceCredentials;
+export default RNConfirmDeviceCredentials;

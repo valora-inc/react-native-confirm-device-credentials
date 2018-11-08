@@ -1,7 +1,7 @@
-package com.reactlibrary.securekeystore;
+package com.reactlibrary;
 
 public class Constants {
-    public static final String TAG = "SecureKeyStore";
+    public static final String TAG = "ConfirmDeviceCredentials";
     // Key Store
     public static final String KEYSTORE_PROVIDER_1 = "AndroidKeyStore";
     public static final String KEYSTORE_PROVIDER_2 = "AndroidKeyStoreBCWorkaround";

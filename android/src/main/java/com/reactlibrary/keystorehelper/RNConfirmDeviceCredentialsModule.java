@@ -1,4 +1,4 @@
-package com.reactlibrary.keystorehelper;
+package com.reactlibrary;
 
 import android.widget.Toast;
 
@@ -25,10 +25,5 @@ public class RNConfirmDeviceCredentialsModule extends ReactContextBaseJavaModule
         return "RNConfirmDeviceCredentials";
     }
 
-  @ReactMethod
-  public boolean isDeviceSecure() {
-      KeyguardManager KeyguardManager = getReactApplicationContext().getSystemService(
-        Context.KEYGUARD_SERVICE)
-        return KeyguardManager.isDeviceSecure();
-  }
+  
 }
