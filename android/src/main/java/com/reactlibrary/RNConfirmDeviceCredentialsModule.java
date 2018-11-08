@@ -6,6 +6,9 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 
+import android.app.KeyguardManager;
+import android.content.Context;
+
 public class RNConfirmDeviceCredentialsModule extends ReactContextBaseJavaModule {
 
   private final ReactApplicationContext reactContext;
@@ -22,7 +25,7 @@ public class RNConfirmDeviceCredentialsModule extends ReactContextBaseJavaModule
 
   @ReactMethod
   public boolean isDeviceSecure() {
-      KeyguardManager KeyguardManager = getReactApplicationContext().getSystemService(
+      KeyguardManager KeyguardManager = (KeyguardManager)getReactApplicationContext().getSystemService(
         Context.KEYGUARD_SERVICE);
         return KeyguardManager.isDeviceSecure();
   }
