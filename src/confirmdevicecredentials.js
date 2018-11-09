@@ -1,9 +1,9 @@
 // @flow
 
-import { Platform, NativeModules } from 'react-native'
-import type {
-  ConfirmDeviceCredentialsNativeModule
-} from './types'
+// import { Platform, NativeModules } from 'react-native'
+// import type {
+//   ConfirmDeviceCredentialsNativeModule
+// } from './types'
 
 // /**
 //  * Geth object
@@ -45,6 +45,22 @@ import type {
 //   // async retrievePin(keyName: string): Promise<string> {
 //   //   return await this.geth.retrievePin(keyName)
 //   // }
+// }
+
+
+import { Platform, NativeModules } from 'react-native'
+import type {
+  ConfirmDeviceCredentialsNativeModule
+} from './types'
+
+const {ConfirmDeviceCredentials } = NativeModules
+
+// export default {
+//   isDeviceSecure: () => {
+//     console.log(NativeModules);
+//     debugger;
+//     return ConfirmDeviceCredentials.isDeviceSecure()
+//   }
 // }
 
 export default NativeModules.ConfirmDeviceCredentials
