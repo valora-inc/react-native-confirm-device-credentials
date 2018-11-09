@@ -20,7 +20,7 @@ public class RNConfirmDeviceCredentialsModule extends ReactContextBaseJavaModule
 
   @Override
   public String getName() {
-    return "RNConfirmDeviceCredentials";
+    return "ConfirmDeviceCredentials";
   }
 
   @ReactMethod
