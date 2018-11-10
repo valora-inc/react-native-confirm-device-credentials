@@ -85,7 +85,8 @@ public class AndroidKeyStoreHelper {
             // and the constrains (purposes) in the constructor of the Builder
             KeyGenParameterSpec.Builder builder = new KeyGenParameterSpec.Builder(keyName,
                     KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-                    .setBlockModes(KeyProperties.BLOCK_MODE_CBC).setUserAuthenticationRequired(true)
+                    .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+                    .setUserAuthenticationRequired(true)
                     // Require that the user has unlocked in the last 30 seconds
                     .setUserAuthenticationValidityDurationSeconds(reauthenticationTimeoutInSecs)
                     .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7);
