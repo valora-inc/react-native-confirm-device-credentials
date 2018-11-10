@@ -103,6 +103,21 @@ public class AndroidKeyStoreHelper {
         }
     }
 
+    public static boolean deleteKey(String keyName) {
+        KeyStore keyStore = getKeyStore();
+        if (keyStore == null) {
+            Log.e(TAG, "createKey/cannot access keystore");
+            return false;
+        }
+        try {
+            keyStore.deleteEntry(keyName);
+            return true;
+        } catch (KeyStoreException e) {
+            Log.e(TAG, "deleteKey/Failed to delete key: " + keyName, e);
+            return false;
+        }
+    }
+
     public static boolean storePin(Context context, String keyName, String pinValue)
             throws UserNotAuthenticatedException {
         byte[] encryptedData = encrypt(context, keyName, pinValue, PIN_IV_FILENAME);

@@ -31,6 +31,7 @@ public class RNConfirmDeviceCredentialsModule extends ReactContextBaseJavaModule
     private static final String STORE_PIN_ERROR = "STORE_PIN_ERROR";
     private static final String RETRIEVE_PIN_ERROR = "RETRIEVE_PIN_ERROR";
     private static final String UNRECOVERABLE_PIN_ERROR = "UNRECOVERABLE_PIN_ERROR";
+    private static final String DELETE_KEY_ERROR = "DELETE_KEY_ERROR";
 
     private static final int AUTH_FOR_ENCRYPT_REQUEST_CODE = 1;
     private static final int AUTH_FOR_DECRYPT_REQUEST_CODE = 2;
@@ -114,6 +115,8 @@ public class RNConfirmDeviceCredentialsModule extends ReactContextBaseJavaModule
 
     /**
      * This can be called multiple times, it won't recreate the key if the key already exists.
+     * reauthenticationTimeoutInSecs and invalidateKeyByNewBiometricEnrollment cannot be
+     * changed after this call. The only way to re-configure them is to first {@see #deleteKey()}
      */
     @ReactMethod
     public void keystoreInit(String keyName,
@@ -136,6 +139,19 @@ public class RNConfirmDeviceCredentialsModule extends ReactContextBaseJavaModule
             Log.d("GethModule", "key created");
         } catch (Exception e) {
             promise.reject(KEYSTORE_INIT_ERROR, e);
+        }
+    }
+
+    @ReactMethod
+    public void deleteKey(String keyName, Promise promise) {
+        try {
+            if (AndroidKeyStoreHelper.keyExists(keyName)) {
+                promise.reject(DELETE_KEY_ERROR, "Key not found");
+            }
+            boolean result = AndroidKeyStoreHelper.deleteKey(keyName);
+            promise.resolve(result);
+        } catch (Exception e) {
+            promise.reject(DELETE_KEY_ERROR, e);
         }
     }
 
