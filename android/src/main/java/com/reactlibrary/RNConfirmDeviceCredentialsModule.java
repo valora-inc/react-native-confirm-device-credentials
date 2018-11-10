@@ -18,6 +18,8 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Promise;
 
+import java.security.UnrecoverableKeyException;
+
 
 public class RNConfirmDeviceCredentialsModule extends ReactContextBaseJavaModule {
 
@@ -45,13 +47,14 @@ public class RNConfirmDeviceCredentialsModule extends ReactContextBaseJavaModule
   private static final String KEYSTORE_INIT_ERROR = "KEYSTORE_INIT_ERROR";
   private static final String USER_NOT_AUTHENTICATED_ERROR = "USER_NOT_AUTHENTICATED_ERROR";
   private static final String STORE_PIN_ERROR = "STORE_PIN_ERROR";
-  private static final String RETRIEVE_PIN_ERROR = "RTETRIEVE_PIN_ERROR";
+  private static final String RETRIEVE_PIN_ERROR = "RETRIEVE_PIN_ERROR";
+    private static final String UNRECOVERABLE_PIN_ERROR = "UNRECOVERABLE_PIN_ERROR";
 
   private static final int AUTH_FOR_ENCRYPT_REQUEST_CODE = 1;
   private static final int AUTH_FOR_DECRYPT_REQUEST_CODE = 2;
   private static final int REQUEST_CODE_FOR_SET_PASSWORD_ACTION = 3;
 
-  private final ReactApplicationContext reactContext;
+    private final ReactApplicationContext reactContext;
 
   public RNConfirmDeviceCredentialsModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -238,13 +241,17 @@ public class RNConfirmDeviceCredentialsModule extends ReactContextBaseJavaModule
                     keyName);
             promise.resolve(result);
         } catch (UserNotAuthenticatedException e) {
-          final Runnable retryRunnable = new Runnable() {
-            @Override
-            public void run() {
-              retrievePin(keyName, promise);
-            }
-          };
-          performAuthentication(promise, e, AUTH_FOR_DECRYPT_REQUEST_CODE, retryRunnable);
+            final Runnable retryRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    retrievePin(keyName, promise);
+                }
+            };
+            performAuthentication(promise, e, AUTH_FOR_DECRYPT_REQUEST_CODE, retryRunnable);
+        } catch (UnrecoverableKeyException e) {
+            // The user removed the screen lock. The encryption key is unrecoverable, even if,
+            // user puts the screen lock back on.
+            promise.reject(UNRECOVERABLE_PIN_ERROR, e);
         } catch (Exception e) {
             promise.reject(RETRIEVE_PIN_ERROR, e);
         }

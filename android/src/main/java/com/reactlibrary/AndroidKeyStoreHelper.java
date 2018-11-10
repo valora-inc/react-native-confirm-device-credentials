@@ -117,7 +117,8 @@ public class AndroidKeyStoreHelper {
         return true;
     }
 
-    public static String retrievePin(Context context, String keyName) throws UserNotAuthenticatedException {
+    public static String retrievePin(Context context, String keyName) throws
+            UserNotAuthenticatedException, UnrecoverableKeyException {
         byte[] encryptedData = readData(context, PIN_ENCRYPTED_FILENAME);
 
         KeyStore keyStore = getKeyStore();
@@ -171,11 +172,16 @@ public class AndroidKeyStoreHelper {
             Log.e(TAG, "Cannot access keystore, cannot create key");
             return false;
         }
-        return getKey(keyStore, keyName) != null;
+        try {
+            return getKey(keyStore, keyName) != null;
+        } catch (UnrecoverableKeyException e) {
+            // An unrecoveable key is same as a non-existent key.
+            return false;
+        }
     }
 
     @Nullable
-    private static Key getKey(KeyStore keyStore, String keyName) {
+    private static Key getKey(KeyStore keyStore, String keyName) throws UnrecoverableKeyException {
         try {
             return keyStore.getKey(keyName, null);
         } catch (KeyStoreException | NoSuchAlgorithmException e) {
@@ -183,7 +189,7 @@ public class AndroidKeyStoreHelper {
             return null;
         } catch (UnrecoverableKeyException e) {
             Log.e(TAG, "Key is unrecoverable", e);
-            return null;
+            throw e;
         }
     }
 
@@ -194,7 +200,13 @@ public class AndroidKeyStoreHelper {
             return null;
         }
 
-        Key secretKey = getKey(keyStore, keyName);
+        Key secretKey;
+        try {
+            secretKey = getKey(keyStore, keyName);
+        } catch (UnrecoverableKeyException e) {
+            Log.e(TAG, "key is unrecoverable, this is unusual at the time of encrypt");
+            return null;
+        }
         if (secretKey == null) {
             Log.e(TAG, "encrypt/fail to read key");
             return null;
