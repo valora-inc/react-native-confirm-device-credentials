@@ -23,50 +23,30 @@ import java.security.UnrecoverableKeyException;
 
 public class RNConfirmDeviceCredentialsModule extends ReactContextBaseJavaModule {
 
-  private static final String TAG = "RNonfirmDeviceCredentialsModule";
-  private static final String CONFIG_NODE_ERROR = "CONFIG_NODE_ERROR";
-  private static final String START_NODE_ERROR = "START_NODE_ERROR";
-  private static final String STOP_NODE_ERROR = "STOP_NODE_ERROR";
-  private static final String NEW_ACCOUNT_ERROR = "NEW_ACCOUNT_ERROR";
-  private static final String SET_ACCOUNT_ERROR = "SET_ACCOUNT_ERROR";
-  private static final String GET_ACCOUNT_ERROR = "GET_ACCOUNT_ERROR";
-  private static final String BALANCE_ACCOUNT_ERROR = "BALANCE_ACCOUNT_ERROR";
-  private static final String BALANCE_AT_ERROR = "BALANCE_AT_ERROR";
-  private static final String SYNC_PROGRESS_ERROR = "SYNC_PROGRESS_ERROR";
-  private static final String SUBSCRIBE_NEW_HEAD_ERROR = "SUBSCRIBE_NEW_HEAD_ERROR";
-  private static final String UPDATE_ACCOUNT_ERROR = "UPDATE_ACCOUNT_ERROR";
-  private static final String DELETE_ACCOUNT_ERROR = "DELETE_ACCOUNT_ERROR";
-  private static final String EXPORT_KEY_ERROR = "EXPORT_ACCOUNT_KEY_ERROR";
-  private static final String IMPORT_KEY_ERROR = "IMPORT_ACCOUNT_KEY_ERROR";
-  private static final String GET_ACCOUNTS_ERROR = "GET_ACCOUNTS_ERROR";
-  private static final String GET_NONCE_ERROR = "GET_NONCE_ERROR";
-  private static final String NEW_TRANSACTION_ERROR = "NEW_TRANSACTION_ERROR";
-  private static final String SUGGEST_GAS_PRICE_ERROR = "SUGGEST_GAS_PRICE_ERROR";
-  private static final String DEVICE_SECURE_ERROR = "DEVICE_SECURE_ERROR";
-  private static final String MAKE_DEVICE_SECURE_ERROR = "MAKE_DEVICE_SECURE_ERROR";
-  private static final String KEYSTORE_INIT_ERROR = "KEYSTORE_INIT_ERROR";
-  private static final String USER_NOT_AUTHENTICATED_ERROR = "USER_NOT_AUTHENTICATED_ERROR";
-  private static final String STORE_PIN_ERROR = "STORE_PIN_ERROR";
-  private static final String RETRIEVE_PIN_ERROR = "RETRIEVE_PIN_ERROR";
+    private static final String TAG = "RNonfirmDeviceCredentialsModule";
+    private static final String DEVICE_SECURE_ERROR = "DEVICE_SECURE_ERROR";
+    private static final String MAKE_DEVICE_SECURE_ERROR = "MAKE_DEVICE_SECURE_ERROR";
+    private static final String KEYSTORE_INIT_ERROR = "KEYSTORE_INIT_ERROR";
+    private static final String USER_NOT_AUTHENTICATED_ERROR = "USER_NOT_AUTHENTICATED_ERROR";
+    private static final String STORE_PIN_ERROR = "STORE_PIN_ERROR";
+    private static final String RETRIEVE_PIN_ERROR = "RETRIEVE_PIN_ERROR";
     private static final String UNRECOVERABLE_PIN_ERROR = "UNRECOVERABLE_PIN_ERROR";
 
-  private static final int AUTH_FOR_ENCRYPT_REQUEST_CODE = 1;
-  private static final int AUTH_FOR_DECRYPT_REQUEST_CODE = 2;
-  private static final int REQUEST_CODE_FOR_SET_PASSWORD_ACTION = 3;
+    private static final int AUTH_FOR_ENCRYPT_REQUEST_CODE = 1;
+    private static final int AUTH_FOR_DECRYPT_REQUEST_CODE = 2;
+    private static final int REQUEST_CODE_FOR_SET_PASSWORD_ACTION = 3;
 
-    private final ReactApplicationContext reactContext;
 
-  public RNConfirmDeviceCredentialsModule(ReactApplicationContext reactContext) {
-    super(reactContext);
-    this.reactContext = reactContext;
-  }
+    public RNConfirmDeviceCredentialsModule(ReactApplicationContext reactContext) {
+        super(reactContext);
+    }
 
-  @Override
-  public String getName() {
-    return "ConfirmDeviceCredentials";
-  }
+    @Override
+    public String getName() {
+        return "ConfirmDeviceCredentials";
+    }
 
-  @ReactMethod
+    @ReactMethod
     public void isDeviceSecure(Promise promise) {
         try {
             promise.resolve(AndroidKeyStoreHelper.isDeviceSecure(getReactApplicationContext()));
@@ -78,32 +58,32 @@ public class RNConfirmDeviceCredentialsModule extends ReactContextBaseJavaModule
     @ReactMethod
     public void makeDeviceSecure(String message, String actionButtonLabel, final Promise promise) {
         final ActivityEventListener activityEventListener = new ActivityEventListener() {
-          @Override
-          public void onActivityResult(Activity activity,
-                                       int requestcode,
-                                       int resultCode,
-                                       Intent intent) {
-              if (requestcode == REQUEST_CODE_FOR_SET_PASSWORD_ACTION) {
-                  if (AndroidKeyStoreHelper.isDeviceSecure(getReactApplicationContext())) {
-                      promise.resolve(true);
-                  } else if (resultCode == Activity.RESULT_OK) {
-                      // Retry since now the user is authenticated.
-                      Log.d(TAG, "makeDeviceSecure/onActivityResult/ok");
-                      promise.resolve(AndroidKeyStoreHelper.isDeviceSecure(
-                              getReactApplicationContext()));
-                  } else {
-                      // User decided to reject authentication.
-                      Log.d(TAG, "makeDeviceSecure/onActivityResult/user-canceled-setup/" + resultCode);
-                      promise.reject(MAKE_DEVICE_SECURE_ERROR, "User canceled setup");
-                  }
-              }
-              getReactApplicationContext().removeActivityEventListener(this);
-          }
+            @Override
+            public void onActivityResult(Activity activity,
+                                         int requestcode,
+                                         int resultCode,
+                                         Intent intent) {
+                if (requestcode == REQUEST_CODE_FOR_SET_PASSWORD_ACTION) {
+                    if (AndroidKeyStoreHelper.isDeviceSecure(getReactApplicationContext())) {
+                        promise.resolve(true);
+                    } else if (resultCode == Activity.RESULT_OK) {
+                        // Retry since now the user is authenticated.
+                        Log.d(TAG, "makeDeviceSecure/onActivityResult/ok");
+                        promise.resolve(AndroidKeyStoreHelper.isDeviceSecure(
+                                getReactApplicationContext()));
+                    } else {
+                        // User decided to reject authentication.
+                        Log.d(TAG, "makeDeviceSecure/onActivityResult/user-canceled-setup/" + resultCode);
+                        promise.reject(MAKE_DEVICE_SECURE_ERROR, "User canceled setup");
+                    }
+                }
+                getReactApplicationContext().removeActivityEventListener(this);
+            }
 
-          @Override
-          public void onNewIntent(Intent intent) {
-              // Do nothing
-          }
+            @Override
+            public void onNewIntent(Intent intent) {
+                // Do nothing
+            }
         };
 
         AndroidKeyStoreHelper.MakeDeviceSecureCallback makeDeviceSecureCallback =
@@ -137,9 +117,9 @@ public class RNConfirmDeviceCredentialsModule extends ReactContextBaseJavaModule
      */
     @ReactMethod
     public void keystoreInit(String keyName,
-            int reauthenticationTimeoutInSecs,
-            boolean invalidateKeyByNewBiometricEnrollment,
-            Promise promise) {
+                             int reauthenticationTimeoutInSecs,
+                             boolean invalidateKeyByNewBiometricEnrollment,
+                             Promise promise) {
         try {
             if (!AndroidKeyStoreHelper.isDeviceSecure(getReactApplicationContext())) {
                 promise.reject(DEVICE_SECURE_ERROR, new Exception("Device is not secure"));
@@ -164,7 +144,7 @@ public class RNConfirmDeviceCredentialsModule extends ReactContextBaseJavaModule
      * the user has authenticated with device credentials within the last X seconds.
      */
     private void createKey(String keyName, int reauthenticationTimeoutInSecs,
-            boolean invalidateKeyByNewBiometricEnrollment) {
+                           boolean invalidateKeyByNewBiometricEnrollment) {
         try {
             boolean result = AndroidKeyStoreHelper.createKey(keyName,
                     reauthenticationTimeoutInSecs, invalidateKeyByNewBiometricEnrollment);
@@ -192,6 +172,29 @@ public class RNConfirmDeviceCredentialsModule extends ReactContextBaseJavaModule
             performAuthentication(promise, e, AUTH_FOR_ENCRYPT_REQUEST_CODE, retryRunnable);
         } catch (Exception e) {
             promise.reject(STORE_PIN_ERROR, e);
+        }
+    }
+
+    @ReactMethod
+    public void retrievePin(final String keyName, final Promise promise) {
+        try {
+            String result = AndroidKeyStoreHelper.retrievePin(getReactApplicationContext(),
+                    keyName);
+            promise.resolve(result);
+        } catch (UserNotAuthenticatedException e) {
+            final Runnable retryRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    retrievePin(keyName, promise);
+                }
+            };
+            performAuthentication(promise, e, AUTH_FOR_DECRYPT_REQUEST_CODE, retryRunnable);
+        } catch (UnrecoverableKeyException e) {
+            // The user removed the screen lock. The encryption key is unrecoverable, even if,
+            // user puts the screen lock back on.
+            promise.reject(UNRECOVERABLE_PIN_ERROR, e);
+        } catch (Exception e) {
+            promise.reject(RETRIEVE_PIN_ERROR, e);
         }
     }
 
@@ -231,29 +234,6 @@ public class RNConfirmDeviceCredentialsModule extends ReactContextBaseJavaModule
             AndroidKeyStoreHelper.authenticateUser(
                     currentActivity,
                     requestCode);
-        }
-    }
-
-    @ReactMethod
-    public void retrievePin(final String keyName, final Promise promise) {
-        try {
-            String result = AndroidKeyStoreHelper.retrievePin(getReactApplicationContext(),
-                    keyName);
-            promise.resolve(result);
-        } catch (UserNotAuthenticatedException e) {
-            final Runnable retryRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    retrievePin(keyName, promise);
-                }
-            };
-            performAuthentication(promise, e, AUTH_FOR_DECRYPT_REQUEST_CODE, retryRunnable);
-        } catch (UnrecoverableKeyException e) {
-            // The user removed the screen lock. The encryption key is unrecoverable, even if,
-            // user puts the screen lock back on.
-            promise.reject(UNRECOVERABLE_PIN_ERROR, e);
-        } catch (Exception e) {
-            promise.reject(RETRIEVE_PIN_ERROR, e);
         }
     }
 }
