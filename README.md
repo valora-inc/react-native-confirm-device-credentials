@@ -12,7 +12,7 @@
 ### Manual installation
 
 
-#### Android
+#### Android (Only API 23 and above are supported)
 
 1. Open up `android/app/src/main/java/[...]/MainActivity.java`
   - Add `import com.reactlibrary.RNConfirmDeviceCredentialsPackage;` to the imports at the top of the file
@@ -30,9 +30,38 @@
 
 ## Usage
 ```javascript
-import RNConfirmDeviceCredentials from 'react-native-confirm-device-credentials';
+import ConfirmDeviceCredentials from 'react-native-confirm-device-credentials';
 
-// TODO: What to do with the module?
-RNConfirmDeviceCredentials;
+ConfirmDeviceCredentials.isDeviceSecure().then((isDeviceSecureResult: bool) => {
+      console.log('Is device secure: ' + isDeviceSecureResult)
+      if (!isDeviceSecureResult) {
+        ConfirmDeviceCredentials.makeDeviceSecure(humanReadableMessage,
+        securitySettingsButtonLabel).then((result: bool) => {
+          console.log('Result of make device secure: ' + result)
+        }).catch((error: any) => {
+          console.log('User canceled authentication: ' + error)
+        })
+      }
+      if (isDeviceSecureResult) {
+        ConfirmDeviceCredentials.keystoreInit(keyName, 10, false).then(
+          (keyStoreInitResult: boolean) => {
+            console.log('Keystore init result: ' + keyStoreInitResult)
+            if (keyStoreInitResult) {
+              ConfirmDeviceCredentials.storePin(keyName, pin).then(
+                (storePinResult: bool) => {
+                  console.log('Store Pin result: ' + storePinResult)
+                  ConfirmDeviceCredentials.retrievePin(keyName).then(
+                  (decryptedPin: string) => {
+                    console.log('Decrypted Pin is : ' + decryptedPin)
+                  })
+                }).catch((reason: any) => {
+                  console.log('Store pin failed: ' + reason)
+                })
+            }
+          }
+        )
+      }
+    })
+
 ```
   
