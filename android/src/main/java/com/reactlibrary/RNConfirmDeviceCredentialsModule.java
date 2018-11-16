@@ -170,25 +170,35 @@ public class RNConfirmDeviceCredentialsModule extends ReactContextBaseJavaModule
         }
     }
 
+    /**
+     * storePin always requires user to confirm device credentials, irrespective of when they
+     * last confirmed them.
+     * @param keyName This key must have been created before with {@see #createKey}
+     * @param pinValue An arbitrary string you want to store as the PIN
+     * @param promise promise which resolves/rejects depending on whether pin storage succeeded or not
+     */
     @ReactMethod
     public void storePin(final String keyName, final String pinValue, final Promise promise) {
-        try {
-            boolean result = AndroidKeyStoreHelper.storePin(
-                    getReactApplicationContext(),
-                    keyName,
-                    pinValue);
-            promise.resolve(result);
-        } catch (final UserNotAuthenticatedException e) {
-            final Runnable retryRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    storePin(keyName, pinValue, promise);
+        Runnable storePinRunnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    boolean result = AndroidKeyStoreHelper.storePin(
+                            getReactApplicationContext(),
+                            keyName,
+                            pinValue);
+                    promise.resolve(result);
+                } catch (final UserNotAuthenticatedException e) {
+                    promise.reject(USER_NOT_AUTHENTICATED_ERROR, e);
+                } catch (Exception e) {
+                    promise.reject(STORE_PIN_ERROR, e);
                 }
-            };
-            performAuthentication(promise, e, AUTH_FOR_ENCRYPT_REQUEST_CODE, retryRunnable);
-        } catch (Exception e) {
-            promise.reject(STORE_PIN_ERROR, e);
-        }
+            }
+        };
+        performAuthentication(promise,
+                new UserNotAuthenticatedException("User failed to authenticate"),
+                AUTH_FOR_ENCRYPT_REQUEST_CODE,
+                storePinRunnable);
     }
 
     @ReactMethod
