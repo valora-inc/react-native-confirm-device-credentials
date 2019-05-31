@@ -1,16 +1,17 @@
 {
-  "name": "react-native-confirm-device-credentials",
+  "name": "@celo/react-native-confirm-device-credentials",
   "version": "1.0.0",
-  "description": "",
-  "main": "src/confirmdevicecredentials",
+  "description": "A simple React Native module to access Android's native device authentication screen.",
+  "homepage": "https://github.com/celo-org/react-native-confirm-device-credentials",
+  "main": "src/index",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "react-native"
   ],
-  "author": "",
-  "license": "",
+  "author": "Celo Labs Inc.",
+  "license": "MIT",
   "peerDependencies": {
     "react-native": "*"
   }
