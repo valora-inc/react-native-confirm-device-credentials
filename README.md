@@ -1,6 +1,8 @@
 
 # react-native-confirm-device-credentials
 
+A simple React Native module to access Android's native device authentication screen.
+
 ## Getting started
 
 `$ npm install react-native-confirm-device-credentials --save`
