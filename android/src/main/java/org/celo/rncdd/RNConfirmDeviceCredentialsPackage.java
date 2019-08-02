@@ -1,5 +1,5 @@
 
-package com.reactlibrary;
+package org.celo.rncdd;
 
 import java.util.Arrays;
 import java.util.Collections;

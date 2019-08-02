@@ -1,4 +1,4 @@
-package com.reactlibrary;
+package org.celo.rncdd;
 
 public class Constants {
     // Key Store

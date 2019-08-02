@@ -1,5 +1,5 @@
 
-package com.reactlibrary;
+package org.celo.rncdd;
 
 
 import android.app.Activity;
