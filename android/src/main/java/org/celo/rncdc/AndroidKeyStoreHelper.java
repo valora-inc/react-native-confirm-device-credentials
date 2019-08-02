@@ -1,4 +1,4 @@
-package org.celo.rncdd;
+package org.celo.rncdc;
 
 import android.app.Activity;
 import android.app.AlertDialog;

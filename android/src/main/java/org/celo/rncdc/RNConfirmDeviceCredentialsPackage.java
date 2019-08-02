@@ -1,5 +1,5 @@
 
-package org.celo.rncdd;
+package org.celo.rncdc;
 
 import java.util.Arrays;
 import java.util.Collections;

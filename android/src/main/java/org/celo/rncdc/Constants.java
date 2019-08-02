@@ -1,4 +1,4 @@
-package org.celo.rncdd;
+package org.celo.rncdc;
 
 public class Constants {
     // Key Store
