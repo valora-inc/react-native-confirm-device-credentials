@@ -1,5 +1,4 @@
-
-package org.celo.rncdc;
+package org.celo.devicecredentials;
 
 
 import android.app.Activity;

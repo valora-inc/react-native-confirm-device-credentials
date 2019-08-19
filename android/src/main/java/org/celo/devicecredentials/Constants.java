@@ -1,4 +1,4 @@
-package org.celo.rncdc;
+package org.celo.devicecredentials;
 
 public class Constants {
     // Key Store

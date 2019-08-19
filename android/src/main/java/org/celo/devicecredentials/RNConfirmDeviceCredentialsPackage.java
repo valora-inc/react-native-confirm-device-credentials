@@ -1,5 +1,5 @@
 
-package org.celo.rncdc;
+package org.celo.devicecredentials;
 
 import java.util.Arrays;
 import java.util.Collections;

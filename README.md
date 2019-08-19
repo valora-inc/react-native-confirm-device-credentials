@@ -16,7 +16,7 @@ A simple React Native module to access Android's native device authentication sc
 
 1. Open up `android/app/src/main/java/[...]/MainActivity.java`
 
-- Add `import org.celo.rncdc.RNConfirmDeviceCredentialsPackage;` to the imports at the top of the file
+- Add `import org.celo.devicecredentials.RNConfirmDeviceCredentialsPackage;` to the imports at the top of the file
 - Add `new RNConfirmDeviceCredentialsPackage()` to the list returned by the `getPackages()` method
 
 2. Append the following lines to `android/settings.gradle`:
