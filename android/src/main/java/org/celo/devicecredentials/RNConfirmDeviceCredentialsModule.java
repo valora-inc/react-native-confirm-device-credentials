@@ -1,5 +1,4 @@
-
-package com.reactlibrary;
+package org.celo.devicecredentials;
 
 
 import android.app.Activity;

@@ -1,4 +1,4 @@
-package com.reactlibrary;
+package org.celo.devicecredentials;
 
 public class Constants {
     // Key Store
